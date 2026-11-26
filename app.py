@@ -55,5 +55,18 @@ def programas_por_nivel(nivel):
     programas = sorted(p for p in programas if p)
     return jsonify({"nivel de formación": nivel, "programas": programas})
 
+@app.route("/api/certificados/<programa>")
+def certificados_por_programa(programa):
+    filtro = {C["programa"]: programa, C["estado_aprendiz"]: "CERTIFICADO"}
+    proyeccion = {
+        "_id": 0,
+        C["ficha"]: 1,
+        C["nombre"]: 1,
+        C["apellido1"]: 1,
+        C["apellido2"]: 1,
+    }
+    lista = list(aprendices.find(filtro, proyeccion, collation=COL))
+    return jsonify({"Aprendices_Certificados": lista, "Programa": programa})
+
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
