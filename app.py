@@ -37,5 +37,11 @@ def valor_ficha(ficha):
         return {"$in": [int(ficha), str(ficha)]}
     return ficha
 
+@app.route("/api/cantidadAprendices")
+def cantidad_aprendices():
+    cantidad = aprendices.count_documents({})
+    return jsonify({"CantidadAprendices": cantidad})
+
+
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
