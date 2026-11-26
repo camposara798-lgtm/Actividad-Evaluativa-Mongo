@@ -141,5 +141,14 @@ def por_estado(ficha, estado):
     lista = list(aprendices.find(filtro, proyeccion, collation=COL))
     return jsonify({"Aprendices": lista, "Estado de los Aprendices": estado, "Ficha": ficha})
 
+@app.route("/api/complementariaVirtual")
+def programas_complementaria_virtual():
+    nivel = "COMPLEMENTARIA VIRTUAL"
+    programas = aprendices.distinct(
+        C["programa"], {C["nivel"]: nivel}, collation=COL
+    )
+    programas = sorted(p for p in programas if p)
+    return jsonify({"nivel de formación": nivel, "programas": programas})
+    
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
