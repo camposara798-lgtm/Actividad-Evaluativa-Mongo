@@ -68,5 +68,28 @@ def certificados_por_programa(programa):
     lista = list(aprendices.find(filtro, proyeccion, collation=COL))
     return jsonify({"Aprendices_Certificados": lista, "Programa": programa})
 
+@app.route("/api/porCertificar/<ficha>/<int:cantidad>")
+def por_certificar(ficha, cantidad):
+    filtro = {C["ficha"]: valor_ficha(ficha), C["estado_aprendiz"]: "POR CERTIFICAR"}
+    proyeccion = {
+        "_id": 0,
+        C["ficha"]: 1,
+        C["programa"]: 1,
+        C["identificacion"]: 1,
+        C["nombre"]: 1,
+        C["apellido1"]: 1,
+        C["apellido2"]: 1,
+    }
+    lista = list(
+        aprendices.find(
+            filtro,
+            proyeccion,
+            collation=COL,
+            sort=[(C["apellido1"], -1)],
+            limit=cantidad,
+        )
+    )
+    return jsonify({"Cantidad de Aprendices por Certificar": lista})
+
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
