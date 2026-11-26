@@ -108,5 +108,19 @@ def terminada_por_unificacion(programa):
     lista = list(aprendices.find(filtro, proyeccion, collation=COL))
     return jsonify({"Aprendices": lista, "Programa": programa})
 
+@app.route("/api/aprendicesPrograma/<programa>")
+def aprendices_por_programa(programa):
+    proyeccion = {
+        "_id": 0,
+        C["programa"]: 1,
+        C["ficha"]: 1,
+        C["nombre"]: 1,
+        C["apellido1"]: 1,
+        C["apellido2"]: 1,
+    }
+    lista = list(aprendices.find({C["programa"]: programa}, proyeccion, collation=COL))
+    return jsonify({"Aprendices": lista, "Programa": programa})
+
+
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
