@@ -21,12 +21,12 @@ COL = {"locale": "es", "strength": 1}
 
 C = {
     "ficha": "FICHA",
-    "identificacion": "IDENTIFICACION",
+    "identificacion": "NUMERO_DOCUMENTO",
     "nombre": "NOMBRE",
     "apellido1": "PRIMER_APELLIDO",
     "apellido2": "SEGUNDO_APELLIDO",
     "programa": "PROGRAMA",
-    "nivel": "NIVEL_FORMACION",
+    "nivel": "NIVEL_DE_FORMACION",
     "estado_aprendiz": "ESTADO_APRENDIZ",
     "estado_ficha": "ESTADO_FICHA",
 }
@@ -41,6 +41,11 @@ def valor_ficha(ficha):
 def cantidad_aprendices():
     cantidad = aprendices.count_documents({})
     return jsonify({"CantidadAprendices": cantidad})
+
+@app.route("/api/cantidadAprendices/<nivel>")
+def cantidad_por_nivel(nivel):
+    cantidad = aprendices.count_documents({C["nivel"]: nivel}, collation=COL)
+    return jsonify({"CantidadAprendices": cantidad, "Nivel de formación": nivel})
 
 
 if __name__ == "__main__":
