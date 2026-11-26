@@ -47,6 +47,13 @@ def cantidad_por_nivel(nivel):
     cantidad = aprendices.count_documents({C["nivel"]: nivel}, collation=COL)
     return jsonify({"CantidadAprendices": cantidad, "Nivel de formación": nivel})
 
+@app.route("/api/programas/<nivel>")
+def programas_por_nivel(nivel):
+    programas = aprendices.distinct(
+        C["programa"], {C["nivel"]: nivel}, collation=COL
+    )
+    programas = sorted(p for p in programas if p)
+    return jsonify({"nivel de formación": nivel, "programas": programas})
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
