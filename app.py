@@ -121,6 +121,11 @@ def aprendices_por_programa(programa):
     lista = list(aprendices.find({C["programa"]: programa}, proyeccion, collation=COL))
     return jsonify({"Aprendices": lista, "Programa": programa})
 
+@app.route("/api/cantidadCertificados/<programa>")
+def cantidad_certificados_programa(programa):
+    filtro = {C["programa"]: programa, C["estado_aprendiz"]: "CERTIFICADO"}
+    cantidad = aprendices.count_documents(filtro, collation=COL)
+    return jsonify({"Programa": programa, "Estado": "CERTIFICADO", "CantidadAprendices": cantidad})
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8000, debug=True)
